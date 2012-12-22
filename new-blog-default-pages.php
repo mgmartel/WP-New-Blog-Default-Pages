@@ -39,9 +39,9 @@ if (!class_exists('WP_NewBlogDefaultPages')) :
          * @since 0.1
          * @static
         */
-        public static function &init( $blog_id ) {
+        public static function &init( $blog_id, $user_id ) {
             static $instance;
-            $instance = new WP_NewBlogDefaultPages( $blog_id );
+            $instance = new WP_NewBlogDefaultPages( $blog_id, $user_id );
 
             return $instance;
         }
@@ -52,7 +52,7 @@ if (!class_exists('WP_NewBlogDefaultPages')) :
          * Thanks to http://wordpress.stackexchange.com/questions/71863/wp-multisite-adding-pages-on-blog-creation-by-default
          * @since 0.1
          */
-        public function __construct( $blog_id ) {
+        public function __construct( $blog_id, $user_id ) {
             $default_pages = $this->get_default_pages();
 
             switch_to_blog( $blog_id );
@@ -70,6 +70,7 @@ if (!class_exists('WP_NewBlogDefaultPages')) :
                     'post_name'    => $post_slug,
                     'post_status'  => 'publish',
                     'post_type'    => 'page',
+                    'post_author'  => $user_id
                 );
                 $page = array_merge ( $data, $page );
 
@@ -117,5 +118,5 @@ if (!class_exists('WP_NewBlogDefaultPages')) :
 
     }
 
-    add_action('wpmu_new_blog', array('WP_NewBlogDefaultPages', 'init'));
+    add_action( 'wpmu_new_blog', array('WP_NewBlogDefaultPages', 'init'), 10, 2 );
 endif;
