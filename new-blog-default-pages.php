@@ -102,7 +102,7 @@ if (!class_exists('WP_NewBlogDefaultPages')) :
 
             $ini_file = apply_filters ( 'default_pages_ini_replace', DEFAULT_PAGES_DIR . "pages.ini" );
 
-            $config = ( file_exists( $ini_file ) ) ? parse_ini_file( $ini_file, 1) : array();
+            $config = ( $ini_file && file_exists( $ini_file ) ) ? parse_ini_file( $ini_file, 1) : array();
 
             if ( has_filter ( 'default_pages_ini_append' ) ) {
                 $extra_ini_files = apply_filters ( 'default_pages_ini_append', array() );
